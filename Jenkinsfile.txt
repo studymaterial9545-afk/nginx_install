@@ -1,0 +1,21 @@
+pipeline {
+    agent { label 'ansible-agent' }  // run on node with Ansible installed
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'git@github.com:your-org/your-ansible-repo.git',
+                    credentialsId: 'github-ssh-key'
+            }
+        }
+
+        stage('Run Ansible Playbook') {
+            steps {
+                sh '''
+                ansible-playbook -i inventory site.yml
+                '''
+            }
+        }
+    }
+}
