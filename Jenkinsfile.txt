@@ -6,7 +6,7 @@ pipeline {
             steps {
                 git branch: 'main',
                     url: 'git@github.com:your-org/your-ansible-repo.git',
-                    credentialsId: 'github-ssh-key'
+                    credentialsId: 'jenkinsAnsible'
             }
         }
 
@@ -18,4 +18,5 @@ pipeline {
             }
         }
     }
+
 }
