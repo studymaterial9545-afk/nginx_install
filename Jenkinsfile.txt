@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'ansible-agent' }  // run on node with Ansible installed
+    agent { label 'ansible' }  // run on node with Ansible installed
 
     stages {
         stage('Checkout') {
@@ -20,3 +20,4 @@ pipeline {
     }
 
 }
+
