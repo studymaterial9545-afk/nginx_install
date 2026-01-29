@@ -2,7 +2,7 @@ pipeline {
     agent { label 'ansible' }  // run on node with Ansible installed
 
     stages {
-        stage('Checkout') {
+        stage('Checkout guthub repo path') {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/studymaterial9545-afk/nginx_install.git',
@@ -20,5 +20,6 @@ pipeline {
     }
 
 }
+
 
 
