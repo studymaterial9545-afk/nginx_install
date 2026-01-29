@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'git@github.com:your-org/your-ansible-repo.git',
+                    url: 'https://github.com/studymaterial9545-afk/nginx_install.git',
                     credentialsId: 'jenkinsAnsible'
             }
         }
@@ -13,11 +13,12 @@ pipeline {
         stage('Run Ansible Playbook') {
             steps {
                 sh '''
-                ansible-playbook -i inventory site.yml
+                ansible-playbook -i inventory install.yml
                 '''
             }
         }
     }
 
 }
+
 
