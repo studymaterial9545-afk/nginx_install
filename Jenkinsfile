@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'tomcat'
+    }
 
     environment {
         ANSIBLE_PLAYBOOK = "deploy.yml"
@@ -25,3 +27,4 @@ pipeline {
         }
     }
 }
+
