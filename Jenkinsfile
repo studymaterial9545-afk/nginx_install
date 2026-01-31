@@ -26,13 +26,14 @@ pipeline {
                     sh '''
                         WAR_FILE=$(ls *.war | tail -n 1)
                         echo "Deploying $WAR_FILE to Tomcat..."
-                        scp -v -o StrictHostKeyChecking=no *.war root@13.232.246.51:/home/ubuntu/tomcat10/webapps/
+                        scp -i $KEYFILE -o StrictHostKeyChecking=no $WAR_FILE $TOMCAT_USER@$TOMCAT_HOST:$TOMCAT_WEBAPPS/
                     '''
                 }
             }
         }
     }
 }
+
 
 
 
