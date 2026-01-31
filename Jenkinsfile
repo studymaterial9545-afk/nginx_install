@@ -21,10 +21,11 @@ pipeline {
             steps {
                 sh '''
                     echo "Running Ansible playbook..."
-                    ansible-playbook -i ${INVENTORY_FILE} ${ANSIBLE_PLAYBOOK}
+                    ansible-playbook -i inventory deploy.yml
                 '''
             }
         }
     }
 }
+
 
