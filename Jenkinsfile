@@ -14,7 +14,7 @@ pipeline {
             steps {
                 // Pull latest code/artifacts from GitHub
                 git branch: 'main',
-                    url: 'https://github.com/studymaterial9545-afk/nginx_install.git,
+                    url: 'https://github.com/studymaterial9545-afk/nginx_install.git',
                     credentialsId: 'jenkinsAnsible'
             }
         }
@@ -34,3 +34,4 @@ pipeline {
         }
     }
 }
+
