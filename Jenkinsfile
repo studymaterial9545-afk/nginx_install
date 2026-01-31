@@ -27,13 +27,13 @@ pipeline {
                         WAR_FILE=$(ls *.war | tail -n 1)
                         echo "Deploying $WAR_FILE to Tomcat..."
                         scp -T -i $KEYFILE -o StrictHostKeyChecking=no $WAR_FILE $TOMCAT_USER@$TOMCAT_HOST:$TOMCAT_WEBAPPS/
-                        ssh -T -i $KEYFILE -o StrictHostKeyChecking=no $TOMCAT_USER@$TOMCAT_HOST "sudo systemctl restart tomcat"
                     '''
                 }
             }
         }
     }
 }
+
 
 
 
