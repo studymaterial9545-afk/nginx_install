@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy WAR to Tomcat') {
             steps {
                 // Use Jenkins credentials for SSH key
-                withCredentials([sshUserPrivateKey(credentialsId: 'tomcat-ssh', keyFileVariable: 'KEYFILE')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'jenkinsAnsible', keyFileVariable: 'KEYFILE')]) {
                     sh '''
                         WAR_FILE=$(ls **/*.war | tail -n 1)
                         echo "Deploying $WAR_FILE to Tomcat..."
@@ -34,4 +34,5 @@ pipeline {
         }
     }
 }
+
 
