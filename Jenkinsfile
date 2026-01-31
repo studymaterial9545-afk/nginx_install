@@ -1,20 +1,21 @@
 pipeline {
-    agent {
-        label 'tomcat_app'
-        {
+    agent any
 
+    tools {
+        maven 'local_maven'
+    }
+    parameteres{
+        string(name:'staging-server', defaulValue: '13.232.246.51', description: 'Remote tomcat server')
+    }
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'Tomcat_App_deploy',
-                    url: 'https://github.com/studymaterial9545-afk/nginx_install.git',
-                    credentialsId: 'jenkinsAnsible'
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'mvn clean package'
+            }
+            post {
+                success {
+                    archiveartifacts artifacts: '**/*.war'
+                }
             }
         }
 
@@ -22,7 +23,7 @@ pipeline {
             steps {
                 // Copy WAR file to Tomcat webapps directory on remote server
                 sh '''
-                scp -o StrictHostKeyChecking=no target/*.war ubuntu@13.232.95.149:/opt/tomcat/webapps/
+                scp -v -o StrictHostKeyChecking=no **/*.war root@13.232.246.51:/home/ubuntu/tomcat10/webapps/
                 '''
             }
         }
