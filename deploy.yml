@@ -1,0 +1,36 @@
+---
+- name: Deploy WAR from GitHub to Tomcat
+  hosts: tomcat_servers
+  become: yes
+  vars:
+    repo_url: "https://github.com/studymaterial9545-afk/nginx_install.git'"   # GitHub repo URL
+    repo_branch: "main"                                    # Branch to pull
+    war_file_name: "SampleWebApp.war"                      # WAR file name in repo
+    tomcat_webapps: "/home/ubuntu/tomcat10/webapps"        # Tomcat webapps directory
+
+  tasks:
+    - name: Ensure git is installed
+      apt:
+        name: git
+        state: present
+      become: yes
+
+    - name: Clone GitHub repo
+      git:
+        repo: "{{ repo_url }}"
+        dest: /tmp/app_repo
+        version: "{{ repo_branch }}"
+        force: yes
+
+    - name: Copy WAR file to Tomcat webapps directory
+      copy:
+        src: "/tmp/app_repo/{{ war_file_name }}"
+        dest: "{{ tomcat_webapps }}/{{ war_file_name }}"
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+
+    - name: Restart Tomcat service
+      service:
+        name: tomcat
+        state: restarted
