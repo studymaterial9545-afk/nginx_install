@@ -1,6 +1,6 @@
 ---
 - name: Deploy WAR from GitHub to Tomcat
-  hosts: tomcat_servers
+  hosts: webservers
   become: yes
   vars:
     repo_url: "https://github.com/studymaterial9545-afk/nginx_install.git'"   # GitHub repo URL
