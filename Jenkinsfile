@@ -1,44 +1,27 @@
 pipeline {
-    agent {
-        label 'tomcat'
-    }
+    agent any
 
     environment {
-        TOMCAT_USER = 'root'
-        TOMCAT_HOST = '13.232.246.51'
-        TOMCAT_WEBAPPS = '/home/ubuntu/tomcat10/webapps'
+        ANSIBLE_PLAYBOOK = "deploy.yml"
+        INVENTORY_FILE   = "inventory"
     }
 
     stages {
-        stage('Checkout WAR') {
+        stage('Checkout') {
             steps {
-                // Pull latest code/artifacts from GitHub
                 git branch: 'main',
                     url: 'https://github.com/studymaterial9545-afk/nginx_install.git',
                     credentialsId: 'jenkinsAnsible'
             }
         }
 
-        stage('Deploy WAR to Tomcat') {
+        stage('Run Ansible Playbook') {
             steps {
-                // Use Jenkins credentials for SSH key
-                withCredentials([sshUserPrivateKey(credentialsId: 'jenkinsAnsible', keyFileVariable: 'KEYFILE')]) {
-                    sh '''
-                        WAR_FILE=$(ls *.war | tail -n 1)
-                        echo "Deploying $WAR_FILE to Tomcat..."
-                        scp -i $KEYFILE -o StrictHostKeyChecking=no $WAR_FILE $TOMCAT_USER@$TOMCAT_HOST:$TOMCAT_WEBAPPS/
-                    '''
-                }
+                sh '''
+                    echo "Running Ansible playbook..."
+                    ansible-playbook -i ${INVENTORY_FILE} ${ANSIBLE_PLAYBOOK}
+                '''
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-
