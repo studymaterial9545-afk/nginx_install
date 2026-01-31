@@ -4,7 +4,7 @@ pipeline {
     }
 
     environment {
-        TOMCAT_USER = 'ubuntu'
+        TOMCAT_USER = 'root'
         TOMCAT_HOST = '13.232.246.51'
         TOMCAT_WEBAPPS = '/home/ubuntu/tomcat10/webapps'
     }
@@ -26,13 +26,14 @@ pipeline {
                     sh '''
                         WAR_FILE=$(ls *.war | tail -n 1)
                         echo "Deploying $WAR_FILE to Tomcat..."
-                        scp -v -o StrictHostKeyChecking=no *.war ubuntu@13.232.246.51:/home/ubuntu/tomcat10/webapps/
+                        scp -v -o StrictHostKeyChecking=no *.war root@13.232.246.51:/home/ubuntu/tomcat10/webapps/
                     '''
                 }
             }
         }
     }
 }
+
 
 
 
