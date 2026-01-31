@@ -1,25 +1,36 @@
 pipeline {
-    agent { label 'ansible' }  // run on node with Ansible installed
+    agent {
+        label 'tomcat'
+    }
+
+    environment {
+        TOMCAT_USER = 'root'
+        TOMCAT_HOST = '13.232.246.51'
+        TOMCAT_WEBAPPS = '/home/ubuntu/tomcat10/webapps'
+    }
 
     stages {
-        stage('Checkout guthub repo path') {
+        stage('Checkout WAR') {
             steps {
+                // Pull latest code/artifacts from GitHub
                 git branch: 'main',
-                    url: 'https://github.com/studymaterial9545-afk/nginx_install.git',
+                    url: 'https://github.com/studymaterial9545-afk/nginx_install.git,
                     credentialsId: 'jenkinsAnsible'
             }
         }
 
-        stage('Run Ansible Playbook') {
+        stage('Deploy WAR to Tomcat') {
             steps {
-                sh '''
-                ansible-playbook -i inventory install.yml
-                '''
+                // Use Jenkins credentials for SSH key
+                withCredentials([sshUserPrivateKey(credentialsId: 'tomcat-ssh', keyFileVariable: 'KEYFILE')]) {
+                    sh '''
+                        WAR_FILE=$(ls **/*.war | tail -n 1)
+                        echo "Deploying $WAR_FILE to Tomcat..."
+                        scp -i $KEYFILE -o StrictHostKeyChecking=no $WAR_FILE $TOMCAT_USER@$TOMCAT_HOST:$TOMCAT_WEBAPPS/
+                        ssh -i $KEYFILE -o StrictHostKeyChecking=no $TOMCAT_USER@$TOMCAT_HOST "sudo systemctl restart tomcat"
+                    '''
+                }
             }
         }
     }
-
 }
-
-
-
